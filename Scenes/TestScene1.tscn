@@ -83,5 +83,5 @@ material/0 = SubResource( 9 )
 shape = SubResource( 6 )
 
 [node name="Sun" type="DirectionalLight" parent="."]
-transform = Transform( 0.789598, 0.477804, -0.385016, 0, 0.627447, 0.778659, 0.613624, -0.614828, 0.495431, 0, 6.13123, 0 )
+transform = Transform( 0.789598, 0.477804, -0.385016, 0, 0.627447, 0.77866, 0.613624, -0.614828, 0.495431, 0.0632343, 6.30296, -0.0539713 )
 light_color = Color( 1, 0.941176, 0.803922, 1 )
