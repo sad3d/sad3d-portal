@@ -36,11 +36,13 @@ func _on_body_entered(body):
 		player.global_transform.origin = portal_target.global_transform.origin - player_displacement
 		player.global_transform.basis = Basis(Vector3.UP, portal_camera.global_transform.basis.get_euler().y)
 		
+#		player.final_velocity = Vector3.ZERO
+		
 		if drag_ray.dragged_object != null:
 			drag_ray.dragged_object.global_transform.origin = drag_point.global_transform.origin
-	elif body is RigidBody:
-		
-		var body_displacement = portal_plane.global_transform.origin - body.global_transform.origin
-		
-		body.global_transform.origin = portal_target.global_transform.origin - body_displacement
-		body.global_transform.basis = Basis(Vector3.UP, portal_camera.global_transform.basis.get_euler().y)
+#	elif body is RigidBody:
+#
+#		var body_displacement = portal_plane.global_transform.origin - body.global_transform.origin
+#
+#		body.global_transform.origin = portal_target.global_transform.origin - body_displacement
+#		body.global_transform.basis = Basis(Vector3.UP, portal_camera.global_transform.basis.get_euler().y)

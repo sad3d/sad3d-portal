@@ -247,7 +247,7 @@ keep_3d_linear = true
 script = ExtResource( 4 )
 
 [node name="PortalPlane" type="Spatial" parent="PortalViewport2"]
-transform = Transform( -0.999034, 0, -0.0439334, 0, 1, 0, 0.0439334, 0, -0.999034, 0.599954, 1.74067, 10.8336 )
+transform = Transform( -0.999034, 0, -0.0439334, 0, 1, 0, 0.0439334, 0, -0.999034, 0.599954, 1.32765, 10.8336 )
 
 [node name="PortalArea" type="Area" parent="PortalViewport2/PortalPlane"]
 
@@ -286,7 +286,7 @@ skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="PortalTarget" type="Position3D" parent="PortalViewport2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.58582, 0.751969, -12.6009 )
+transform = Transform( -0.398749, 0, 0.91706, 0, 1, 0, -0.91706, 0, -0.398749, 10.703, 1.08925, -7.46805 )
 script = ExtResource( 2 )
 speed = 0.0
 
