@@ -1,0 +1,142 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Player/PlayerPhysicsMaterial.phymat" type="PhysicsMaterial" id=1]
+[ext_resource path="res://Player/Scripts/PlayerController.gd" type="Script" id=2]
+[ext_resource path="res://Player/Scripts/DragRay.gd" type="Script" id=3]
+[ext_resource path="res://Player/Scripts/InteractRay.gd" type="Script" id=4]
+[ext_resource path="res://Player/Scripts/HUDRay.gd" type="Script" id=5]
+[ext_resource path="res://Player/Textures/Crosshair.png" type="Texture" id=13]
+[ext_resource path="res://Assets/Fonts/Theme1.tres" type="Theme" id=17]
+[ext_resource path="res://Player/Scripts/HUDController.gd" type="Script" id=30]
+
+[sub_resource type="CapsuleShape" id=1]
+radius = 0.35
+height = 1.1
+
+[node name="Player" type="RigidBody"]
+collision_layer = 7
+collision_mask = 7
+physics_material_override = ExtResource( 1 )
+custom_integrator = true
+can_sleep = false
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+linear_damp = 120.0
+angular_damp = 120.0
+script = ExtResource( 2 )
+
+[node name="RotationHelper" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0 )
+
+[node name="Camera" type="Camera" parent="RotationHelper"]
+doppler_tracking = 2
+current = true
+near = 0.04
+far = 600.0
+
+[node name="DragRay" type="RayCast" parent="RotationHelper"]
+enabled = true
+cast_to = Vector3( 0, 0, -1.95 )
+collision_mask = 7
+script = ExtResource( 3 )
+max_drag_distance = 1.6
+min_drag_distance = 0.6
+
+[node name="DragPoint" type="Position3D" parent="RotationHelper/DragRay"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.95 )
+
+[node name="InteractRay" type="RayCast" parent="RotationHelper"]
+enabled = true
+cast_to = Vector3( 0, 0, -1.95 )
+collision_mask = 7
+collide_with_areas = true
+script = ExtResource( 4 )
+
+[node name="HUDRay" type="RayCast" parent="RotationHelper"]
+enabled = true
+cast_to = Vector3( 0, 0, -1.95 )
+collision_mask = 7
+collide_with_areas = true
+script = ExtResource( 5 )
+
+[node name="BodyCollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+shape = SubResource( 1 )
+
+[node name="FloorRay" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0 )
+enabled = true
+cast_to = Vector3( 0, -0.55, 0 )
+collision_mask = 7
+
+[node name="StairsRay" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.35, -0.42 )
+enabled = true
+cast_to = Vector3( 0, -0.5, 0 )
+collision_mask = 7
+
+[node name="CeilingRay" type="RayCast" parent="."]
+enabled = true
+cast_to = Vector3( 0, 1.45, 0 )
+collision_mask = 7
+
+[node name="HUD" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 17 )
+script = ExtResource( 30 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Crosshair" type="TextureRect" parent="HUD"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -4.0
+margin_top = -4.0
+margin_right = 4.0
+margin_bottom = 4.0
+rect_pivot_offset = Vector2( 4, 4 )
+texture = ExtResource( 13 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Hint" type="Label" parent="HUD"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -453.0
+margin_top = -64.0
+margin_right = 453.0
+margin_bottom = -11.0
+grow_vertical = 0
+text = "HINT: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Odi et amo. Quare id faciam, fortasse requiris. Nescio, sed fieri. Sentio et excrucior."
+align = 1
+valign = 2
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Subtitles" type="Label" parent="HUD"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -452.0
+margin_top = -176.0
+margin_right = 453.0
+margin_bottom = -62.0
+grow_vertical = 0
+align = 1
+valign = 2
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
