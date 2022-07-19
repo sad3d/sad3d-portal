@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Player/PlayerVanilla.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/PortalCamera.gd" type="Script" id=2]
@@ -30,6 +30,7 @@ albedo_color = Color( 0, 1, 0.0627451, 1 )
 albedo_color = Color( 1, 0.819608, 0, 1 )
 
 [sub_resource type="QuadMesh" id=10]
+size = Vector2( 3, 4 )
 
 [sub_resource type="VisualShaderNodeInput" id=22]
 input_name = "vertex"
@@ -128,7 +129,10 @@ shader_param/ColorUniform = Color( 1, 0.678431, 0.678431, 1 )
 shader_param/TextureUniform = SubResource( 14 )
 
 [sub_resource type="BoxShape" id=23]
-extents = Vector3( 0.500466, 0.483243, 0.0841258 )
+extents = Vector3( 1.55498, 2.09478, 0.0841258 )
+
+[sub_resource type="SpatialMaterial" id=24]
+albedo_color = Color( 0.615686, 0, 0.65098, 1 )
 
 [node name="TestScene1" type="Spatial"]
 
@@ -195,19 +199,8 @@ size = Vector2( 960, 540 )
 size_override_stretch = true
 keep_3d_linear = true
 
-[node name="Portal1Cam" type="Camera" parent="Portal1Viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.60492, 2.28721, -2.52332 )
-cull_mask = 1048063
-script = ExtResource( 2 )
-
-[node name="Box6" type="MeshInstance" parent="Portal1Viewport/Portal1Cam"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
-mesh = SubResource( 4 )
-skeleton = NodePath("../../..")
-material/0 = SubResource( 8 )
-
 [node name="Portal1Plane" type="MeshInstance" parent="Portal1Viewport"]
-transform = Transform( 0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -5.13059, 1.36402, -0.340761 )
+transform = Transform( 0.0276248, 0, 0.999618, 0, 1, 0, -0.999618, 0, 0.0276248, -13.0334, 2.03467, -2.62884 )
 layers = 512
 mesh = SubResource( 10 )
 material/0 = SubResource( 15 )
@@ -221,11 +214,35 @@ target_point = NodePath("../../Portal1Target")
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 23 )
 
-[node name="Portal1Target" type="Position3D" parent="Portal1Viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.65784, 2, -3.32295 )
+[node name="Spatial" type="Spatial" parent="Portal1Viewport/Portal1Plane"]
 
-[node name="Box5" type="MeshInstance" parent="Portal1Viewport/Portal1Target"]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+[node name="Box5" type="MeshInstance" parent="Portal1Viewport/Portal1Plane"]
+transform = Transform( 0.163312, 0, 0, 0, 2.20332, 0, -1.11759e-08, 0, 0.265056, 1.41003, 0, -1.90735e-06 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../../..")
-material/0 = SubResource( 5 )
+material/0 = SubResource( 24 )
+
+[node name="Box6" type="MeshInstance" parent="Portal1Viewport/Portal1Plane"]
+transform = Transform( 0.163312, 0, 0, 0, 2.20332, 0, -1.86265e-08, 0, 0.265056, -1.58876, 0, -9.53674e-07 )
+mesh = SubResource( 4 )
+skeleton = NodePath("../../..")
+material/0 = SubResource( 24 )
+
+[node name="Box7" type="MeshInstance" parent="Portal1Viewport/Portal1Plane"]
+transform = Transform( -7.13859e-09, 2.20332, 3.72529e-08, -0.163312, -9.63101e-08, 0, 1.33227e-15, -4.17233e-07, 0.265056, -0.0990455, 1.95922, -3.8147e-06 )
+mesh = SubResource( 4 )
+skeleton = NodePath("../../..")
+material/0 = SubResource( 24 )
+
+[node name="Box8" type="MeshInstance" parent="Portal1Viewport/Portal1Plane"]
+transform = Transform( -7.13859e-09, 2.20332, 3.72529e-08, -0.163312, -9.63101e-08, 0, 1.9984e-15, -7.15256e-07, 0.265056, -0.0990455, -1.88574, -5.72205e-06 )
+mesh = SubResource( 4 )
+skeleton = NodePath("../../..")
+material/0 = SubResource( 24 )
+
+[node name="Portal1Target" type="Position3D" parent="Portal1Viewport"]
+transform = Transform( 0.874188, 0, 0.485588, 0, 1, 0, -0.485588, 0, 0.874188, 12.49, 2.00848, 8.68701 )
+
+[node name="Portal1Cam" type="Camera" parent="Portal1Viewport/Portal1Target"]
+cull_mask = 1048063
+script = ExtResource( 2 )
