@@ -1,6 +1,8 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://Player/PlayerVanilla.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/PortalCamera.gd" type="Script" id=2]
+[ext_resource path="res://Scripts/Portal.gd" type="Script" id=3]
 
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 20, 0.1, 20 )
@@ -27,10 +29,112 @@ albedo_color = Color( 0, 1, 0.0627451, 1 )
 [sub_resource type="SpatialMaterial" id=9]
 albedo_color = Color( 1, 0.819608, 0, 1 )
 
+[sub_resource type="QuadMesh" id=10]
+
+[sub_resource type="VisualShaderNodeInput" id=22]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeInput" id=11]
+output_port_for_preview = 0
+input_name = "screen_uv"
+
+[sub_resource type="VisualShaderNodeTextureUniform" id=12]
+output_port_for_preview = 0
+uniform_name = "TextureUniform"
+
+[sub_resource type="VisualShaderNodeVectorOp" id=17]
+operator = 2
+
+[sub_resource type="VisualShaderNodeColorUniform" id=18]
+uniform_name = "ColorUniform"
+
+[sub_resource type="VisualShaderNodeInput" id=20]
+input_name = "screen_texture"
+
+[sub_resource type="VisualShaderNodeTexture" id=21]
+output_port_for_preview = 0
+source = 5
+
+[sub_resource type="VisualShader" id=13]
+code = "shader_type spatial;
+render_mode specular_schlick_ggx, unshaded;
+
+uniform sampler2D TextureUniform;
+uniform vec4 ColorUniform : hint_color;
+
+
+
+void vertex() {
+// Output:0
+
+}
+
+void fragment() {
+// Input:2
+	vec3 n_out2p0 = vec3(SCREEN_UV, 0.0);
+
+// TextureUniform:3
+	vec3 n_out3p0;
+	float n_out3p1;
+	{
+		vec4 n_tex_read = texture(TextureUniform, n_out2p0.xy);
+		n_out3p0 = n_tex_read.rgb;
+		n_out3p1 = n_tex_read.a;
+	}
+
+// ColorUniform:6
+	vec3 n_out6p0 = ColorUniform.rgb;
+	float n_out6p1 = ColorUniform.a;
+
+// VectorOp:5
+	vec3 n_out5p0 = n_out3p0 * n_out6p0;
+
+// Output:0
+	ALBEDO = n_out5p0;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -501, 19 )
+flags/unshaded = true
+nodes/fragment/0/position = Vector2( 740, 160 )
+nodes/fragment/2/node = SubResource( 11 )
+nodes/fragment/2/position = Vector2( -460, 220 )
+nodes/fragment/3/node = SubResource( 12 )
+nodes/fragment/3/position = Vector2( 40, 180 )
+nodes/fragment/5/node = SubResource( 17 )
+nodes/fragment/5/position = Vector2( 493, 320 )
+nodes/fragment/6/node = SubResource( 18 )
+nodes/fragment/6/position = Vector2( 300, 420 )
+nodes/fragment/8/node = SubResource( 20 )
+nodes/fragment/8/position = Vector2( -460, 440 )
+nodes/fragment/9/node = SubResource( 21 )
+nodes/fragment/9/position = Vector2( 120, 540 )
+nodes/fragment/10/node = SubResource( 22 )
+nodes/fragment/10/position = Vector2( -440, 140 )
+nodes/fragment/connections = PoolIntArray( 6, 0, 5, 1, 8, 0, 9, 2, 3, 0, 5, 0, 5, 0, 0, 0, 2, 0, 3, 0 )
+
+[sub_resource type="ViewportTexture" id=14]
+viewport_path = NodePath("Portal1Viewport")
+
+[sub_resource type="ShaderMaterial" id=15]
+resource_local_to_scene = true
+shader = SubResource( 13 )
+shader_param/ColorUniform = Color( 1, 0.678431, 0.678431, 1 )
+shader_param/TextureUniform = SubResource( 14 )
+
+[sub_resource type="BoxShape" id=23]
+extents = Vector3( 0.500466, 0.483243, 0.0841258 )
+
 [node name="TestScene1" type="Spatial"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.515151, 1.55668, 1.38453 )
+enable_cheats = true
 
 [node name="Ground" type="MeshInstance" parent="."]
 transform = Transform( 2, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0 )
@@ -85,3 +189,43 @@ shape = SubResource( 6 )
 [node name="Sun" type="DirectionalLight" parent="."]
 transform = Transform( 0.789598, 0.477804, -0.385016, 0, 0.627447, 0.77866, 0.613624, -0.614828, 0.495431, 0.0632343, 6.30296, -0.0539713 )
 light_color = Color( 1, 0.941176, 0.803922, 1 )
+
+[node name="Portal1Viewport" type="Viewport" parent="."]
+size = Vector2( 960, 540 )
+size_override_stretch = true
+keep_3d_linear = true
+
+[node name="Portal1Cam" type="Camera" parent="Portal1Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.60492, 2.28721, -2.52332 )
+cull_mask = 1048063
+script = ExtResource( 2 )
+
+[node name="Box6" type="MeshInstance" parent="Portal1Viewport/Portal1Cam"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+mesh = SubResource( 4 )
+skeleton = NodePath("../../..")
+material/0 = SubResource( 8 )
+
+[node name="Portal1Plane" type="MeshInstance" parent="Portal1Viewport"]
+transform = Transform( 0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, -5.13059, 1.36402, -0.340761 )
+layers = 512
+mesh = SubResource( 10 )
+material/0 = SubResource( 15 )
+
+[node name="Area" type="Area" parent="Portal1Viewport/Portal1Plane"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+script = ExtResource( 3 )
+target_point = NodePath("../../Portal1Target")
+
+[node name="CollisionShape" type="CollisionShape" parent="Portal1Viewport/Portal1Plane/Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 23 )
+
+[node name="Portal1Target" type="Position3D" parent="Portal1Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.65784, 2, -3.32295 )
+
+[node name="Box5" type="MeshInstance" parent="Portal1Viewport/Portal1Target"]
+transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0 )
+mesh = SubResource( 4 )
+skeleton = NodePath("../../..")
+material/0 = SubResource( 5 )
