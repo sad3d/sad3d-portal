@@ -13,6 +13,10 @@ config_version=4
 config/name="Teleport"
 config/icon="res://icon.png"
 
+[debug]
+
+settings/fps/force_fps=60
+
 [display]
 
 window/size/width=960

@@ -9,10 +9,14 @@ onready var drag_point = player.get_node("RotationHelper/DragRay/DragPoint")
 
 onready var portal_plane = $"PortalPlane"
 onready var portal_area = $"PortalPlane/PortalArea"
-onready var portal_dummy = $"PortalPlane/PortalDummy"
+onready var portal_camera_dummy = $"PortalPlane/PortalCameraDummy"
+onready var portal_player_dummy = $"PortalPlane/PortalPlayerDummy"
 
 onready var portal_target = $"PortalTarget"
 onready var portal_camera = $"PortalTarget/PortalCamera"
+
+var player_distance
+export var max_render_distance = 50.0
 
 
 func _ready():
@@ -21,28 +25,40 @@ func _ready():
 
 
 func _process(_delta):
-	# Orient camera in space
-	portal_dummy.global_transform.origin = player_camera.global_transform.origin
-	portal_dummy.global_transform.basis = player_camera.global_transform.basis
-	portal_camera.transform.origin = portal_dummy.transform.origin
-	portal_camera.transform.basis = portal_dummy.transform.basis
+	# Orient camera and in space
+	portal_camera_dummy.global_transform.origin = player_camera.global_transform.origin
+	portal_camera_dummy.global_transform.basis = player_camera.global_transform.basis
+	portal_camera.transform.origin = portal_camera_dummy.transform.origin
+	portal_camera.transform.basis = portal_camera_dummy.transform.basis
+	
+	portal_player_dummy.global_transform.origin = player.global_transform.origin
+	portal_player_dummy.global_transform.basis = player.global_transform.basis
+	
+	# Check distance to player, do not render if far
+	player_distance = portal_plane.global_transform.origin.distance_to(player.global_transform.origin)
+	
+	if player_distance >= max_render_distance:
+		render_target_update_mode = Viewport.UPDATE_DISABLED
+	else:
+		render_target_update_mode = Viewport.UPDATE_WHEN_VISIBLE
+		
+	# Set clipping plane for PortalCamera
+	portal_camera.near = player_distance
+	if player_distance < 5:
+		portal_camera.near = 0.05
+	else:
+		portal_camera.near = player_distance - 5
 	
 	
 func _on_body_entered(body):
 	if body.name == "Player":
 		
-		var player_displacement = portal_plane.global_transform.origin - player.global_transform.origin
+		var player_displacement = portal_player_dummy.global_transform.origin - portal_plane.global_transform.origin
 		
-		player.global_transform.origin = portal_target.global_transform.origin - player_displacement
+		player.global_transform.origin = portal_target.global_transform.origin + player_displacement
 		player.global_transform.basis = Basis(Vector3.UP, portal_camera.global_transform.basis.get_euler().y)
 		
-#		player.final_velocity = Vector3.ZERO
-		
-		if drag_ray.dragged_object != null:
-			drag_ray.dragged_object.global_transform.origin = drag_point.global_transform.origin
-#	elif body is RigidBody:
-#
-#		var body_displacement = portal_plane.global_transform.origin - body.global_transform.origin
-#
-#		body.global_transform.origin = portal_target.global_transform.origin - body_displacement
-#		body.global_transform.basis = Basis(Vector3.UP, portal_camera.global_transform.basis.get_euler().y)
+	elif body is RigidBody:
+
+		var body_displacement = portal_plane.global_transform.origin - body.global_transform.origin
+		body.global_transform.origin = portal_target.global_transform.origin - body_displacement
