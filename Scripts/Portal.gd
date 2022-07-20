@@ -18,9 +18,13 @@ onready var portal_camera = $"PortalTarget/PortalCamera"
 var player_distance
 export var max_render_distance = 50.0
 
+export (NodePath) var portal_pair
+var portal_pair_node
+
 
 func _ready():
 	portal_area.connect("body_entered", self, "_on_body_entered")
+	portal_pair_node = get_node(portal_pair)
 	
 
 
@@ -44,10 +48,10 @@ func _process(_delta):
 		
 	# Set clipping plane for PortalCamera
 	portal_camera.near = player_distance
-	if player_distance < 5:
+	if player_distance < 0.1:
 		portal_camera.near = 0.05
 	else:
-		portal_camera.near = player_distance - 5
+		portal_camera.near = player_distance
 	
 	
 func _on_body_entered(body):
@@ -55,8 +59,10 @@ func _on_body_entered(body):
 		
 		var player_displacement = portal_player_dummy.global_transform.origin - portal_plane.global_transform.origin
 		
-		player.global_transform.origin = portal_target.global_transform.origin + player_displacement
-		player.global_transform.basis = Basis(Vector3.UP, portal_camera.global_transform.basis.get_euler().y)
+		if portal_plane.global_transform.basis.z.dot(-player_displacement) > 0:
+		
+			player.global_transform.origin = portal_target.global_transform.origin + player_displacement
+			player.global_transform.basis = Basis(Vector3.UP, portal_camera.global_transform.basis.get_euler().y)
 		
 	elif body is RigidBody:
 
