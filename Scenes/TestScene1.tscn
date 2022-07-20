@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Player/PlayerVanilla.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Spin.gd" type="Script" id=2]
@@ -27,8 +27,16 @@ albedo_texture = ExtResource( 7 )
 
 [sub_resource type="BoxShape" id=6]
 
+[sub_resource type="SpatialMaterial" id=34]
+albedo_color = Color( 1, 0.886275, 0.494118, 1 )
+albedo_texture = ExtResource( 7 )
+
 [sub_resource type="SpatialMaterial" id=8]
 albedo_color = Color( 0.690196, 1, 0.709804, 1 )
+albedo_texture = ExtResource( 7 )
+
+[sub_resource type="SpatialMaterial" id=33]
+albedo_color = Color( 1, 0.423529, 0.309804, 1 )
 albedo_texture = ExtResource( 7 )
 
 [sub_resource type="SpatialMaterial" id=9]
@@ -170,7 +178,7 @@ material/0 = SubResource( 3 )
 shape = SubResource( 30 )
 
 [node name="Box2" type="MeshInstance" parent="Environment"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.17332, 1.36356, -7.12538 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.011, 1.36356, -10.6147 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 7 )
@@ -178,6 +186,17 @@ material/0 = SubResource( 7 )
 [node name="StaticBody" type="StaticBody" parent="Environment/Box2"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Box2/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="Box5" type="MeshInstance" parent="Environment"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.55295, 1.36356, 12.7757 )
+mesh = SubResource( 4 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 34 )
+
+[node name="StaticBody" type="StaticBody" parent="Environment/Box5"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Environment/Box5/StaticBody"]
 shape = SubResource( 6 )
 
 [node name="Box3" type="MeshInstance" parent="Environment"]
@@ -189,6 +208,17 @@ material/0 = SubResource( 8 )
 [node name="StaticBody" type="StaticBody" parent="Environment/Box3"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Box3/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="Box4" type="MeshInstance" parent="Environment"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.2662, 1.36356, -3.19031 )
+mesh = SubResource( 4 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 33 )
+
+[node name="StaticBody" type="StaticBody" parent="Environment/Box4"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Environment/Box4/StaticBody"]
 shape = SubResource( 6 )
 
 [node name="Box7" type="MeshInstance" parent="Environment"]
@@ -408,7 +438,7 @@ skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="PortalTarget" type="Position3D" parent="PortalViewport"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3.7137, 1.79545, -10.385 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.55049, 1.79545, -9.42066 )
 script = ExtResource( 2 )
 speed = 0.0
 
