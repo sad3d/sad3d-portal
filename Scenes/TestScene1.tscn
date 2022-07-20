@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://Player/PlayerVanilla.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Spin.gd" type="Script" id=2]
@@ -45,10 +45,10 @@ albedo_texture = ExtResource( 7 )
 uv1_scale = Vector3( 1, 5.854, 1 )
 
 [sub_resource type="BoxShape" id=23]
-extents = Vector3( 1.555, 2.095, 0.01 )
+extents = Vector3( 1.55498, 2.09478, 0.0841258 )
 
 [sub_resource type="CubeMesh" id=25]
-size = Vector3( 2.894, 3.636, 0.001 )
+size = Vector3( 2.894, 3.636, 0.02 )
 
 [sub_resource type="VisualShaderNodeInput" id=11]
 output_port_for_preview = 0
@@ -66,7 +66,7 @@ uniform_name = "ColorModulation"
 
 [sub_resource type="VisualShader" id=13]
 code = "shader_type spatial;
-render_mode specular_schlick_ggx, unshaded;
+render_mode cull_front, specular_schlick_ggx, unshaded;
 
 uniform sampler2D ViewportTexture;
 uniform vec4 ColorModulation : hint_color;
@@ -108,6 +108,8 @@ void light() {
 
 }
 "
+graph_offset = Vector2( -272, -106 )
+modes/cull = 1
 flags/unshaded = true
 nodes/fragment/0/position = Vector2( 660, 160 )
 nodes/fragment/2/node = SubResource( 11 )
@@ -133,8 +135,6 @@ shader_param/ViewportTexture = SubResource( 27 )
 albedo_texture = ExtResource( 6 )
 uv1_scale = Vector3( 0.2, 2.103, 1 )
 
-[sub_resource type="QuadMesh" id=35]
-
 [sub_resource type="ViewportTexture" id=26]
 viewport_path = NodePath("PortalViewport2")
 
@@ -143,8 +143,6 @@ resource_local_to_scene = true
 shader = SubResource( 13 )
 shader_param/ColorModulation = Color( 1, 1, 1, 1 )
 shader_param/ViewportTexture = SubResource( 26 )
-
-[sub_resource type="QuadMesh" id=36]
 
 [sub_resource type="SpatialMaterial" id=29]
 albedo_texture = ExtResource( 8 )
@@ -221,6 +219,17 @@ material/0 = SubResource( 33 )
 [node name="StaticBody" type="StaticBody" parent="Environment/Box4"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Box4/StaticBody"]
+shape = SubResource( 6 )
+
+[node name="Box7" type="MeshInstance" parent="Environment"]
+transform = Transform( 0.435826, 0, 0, 0, 4.937, 0, 0, 0, 0.435826, 1.80227, 4.05094, -1.29341 )
+mesh = SubResource( 4 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 9 )
+
+[node name="StaticBody" type="StaticBody" parent="Environment/Box7"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Environment/Box7/StaticBody"]
 shape = SubResource( 6 )
 
 [node name="Box8" type="MeshInstance" parent="Environment"]
@@ -333,6 +342,17 @@ material/0 = SubResource( 9 )
 [node name="CollisionShape" type="CollisionShape" parent="Environment/Box20/StaticBody"]
 shape = SubResource( 6 )
 
+[node name="Box9" type="MeshInstance" parent="Environment"]
+transform = Transform( 0.435826, 0, 0, 0, 4.937, 0, 0, 0, 0.435826, 0.439594, 4.05094, 8.67844 )
+mesh = SubResource( 4 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 9 )
+
+[node name="StaticBody" type="StaticBody" parent="Environment/Box9"]
+
+[node name="CollisionShape" type="CollisionShape" parent="Environment/Box9/StaticBody"]
+shape = SubResource( 6 )
+
 [node name="Box10" type="MeshInstance" parent="Environment"]
 transform = Transform( 0.435826, 0, 0, 0, 4.937, 0, 0, 0, 0.435826, 7.0275, 4.05094, 3.60852 )
 mesh = SubResource( 4 )
@@ -374,7 +394,7 @@ shadow_atlas_size = 32
 script = ExtResource( 4 )
 
 [node name="PortalPlane" type="Spatial" parent="PortalViewport"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.55341, 1.661, 7.22245 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.033, 1.661, -2.629 )
 
 [node name="PortalArea" type="Area" parent="PortalViewport/PortalPlane"]
 transform = Transform( 1, 0, -7.45058e-09, 0, 1, 0, 7.45058e-09, 0, 1, 0, 0, 0 )
@@ -410,12 +430,6 @@ mesh = SubResource( 4 )
 skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
-[node name="Box9" type="MeshInstance" parent="PortalViewport/PortalPlane/PortalGraphics"]
-transform = Transform( -1.32247e-07, 3.02546, 8.11057e-07, -4.06327, -1.77611e-07, -8.31335e-16, -9.47726e-15, 2.16274e-07, 0.115464, -0.0990455, -0.0433695, 0.248822 )
-mesh = SubResource( 35 )
-skeleton = NodePath("../../../..")
-material/0 = SubResource( 24 )
-
 [node name="Box8" type="MeshInstance" parent="PortalViewport/PortalPlane/PortalGraphics"]
 transform = Transform( -7.13859e-09, 2.20332, 3.77186e-08, -0.163312, -9.63101e-08, 0, 1.98452e-15, -7.15256e-07, 0.265056, -0.0990455, -1.88574, -5.72205e-06 )
 mesh = SubResource( 4 )
@@ -423,7 +437,7 @@ skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="PortalTarget" type="Position3D" parent="PortalViewport"]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5.025, 1.661, -2.99 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.55, 1.661, -9.421 )
 script = ExtResource( 2 )
 speed = 0.0
 
@@ -438,10 +452,9 @@ shadow_atlas_size = 32
 script = ExtResource( 4 )
 
 [node name="PortalPlane" type="Spatial" parent="PortalViewport2"]
-transform = Transform( 0.999999, 0, 0, 0, 1, 0, 0, 0, 0.999999, 5.0253, 1.6615, -2.98983 )
+transform = Transform( -0.597849, 0, -0.801608, 0, 1, 0, 0.801608, 0, -0.597849, 9.08011, 1.6615, 8.65669 )
 
 [node name="PortalArea" type="Area" parent="PortalViewport2/PortalPlane"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="PortalViewport2/PortalPlane/PortalArea"]
 shape = SubResource( 23 )
@@ -474,12 +487,6 @@ mesh = SubResource( 4 )
 skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
-[node name="Box9" type="MeshInstance" parent="PortalViewport2/PortalPlane/PortalGraphics"]
-transform = Transform( -1.02416e-08, 3.16107, 6.30461e-08, -3.48459, -2.05497e-06, 0, 1.60195e-16, -5.2579e-08, 0.080569, -0.0990453, 0.23716, 0.43575 )
-mesh = SubResource( 36 )
-skeleton = NodePath("../../../..")
-material/0 = SubResource( 24 )
-
 [node name="Box8" type="MeshInstance" parent="PortalViewport2/PortalPlane/PortalGraphics"]
 transform = Transform( -7.13859e-09, 2.20332, 3.77186e-08, -0.163312, -9.63101e-08, 0, 1.98452e-15, -7.15256e-07, 0.265056, -0.0990455, -1.88574, -5.72205e-06 )
 mesh = SubResource( 4 )
@@ -487,7 +494,7 @@ skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="PortalTarget" type="Position3D" parent="PortalViewport2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.553, 1.661, 7.222 )
+transform = Transform( -0.597849, 0, -0.801609, 0, 1, 0, 0.801609, 0, -0.597849, -11.969, 1.661, 8.783 )
 script = ExtResource( 2 )
 speed = 0.0
 
