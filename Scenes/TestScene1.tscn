@@ -394,13 +394,12 @@ shadow_atlas_size = 32
 script = ExtResource( 4 )
 
 [node name="PortalPlane" type="Spatial" parent="PortalViewport"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.0334, 1.74067, -2.62884 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -13.033, 1.661, -2.629 )
 
 [node name="PortalArea" type="Area" parent="PortalViewport/PortalPlane"]
 transform = Transform( 1, 0, -7.45058e-09, 0, 1, 0, 7.45058e-09, 0, 1, 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="PortalViewport/PortalPlane/PortalArea"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 shape = SubResource( 23 )
 
 [node name="PortalCameraDummy" type="Spatial" parent="PortalViewport/PortalPlane"]
@@ -438,7 +437,7 @@ skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="PortalTarget" type="Position3D" parent="PortalViewport"]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.55049, 1.79545, -9.42066 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 5.55, 1.661, -9.421 )
 script = ExtResource( 2 )
 speed = 0.0
 
@@ -495,7 +494,7 @@ skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="PortalTarget" type="Position3D" parent="PortalViewport2"]
-transform = Transform( -0.597849, 0, -0.801609, 0, 1, 0, 0.801609, 0, -0.597849, -11.9693, 1.662, 8.78264 )
+transform = Transform( -0.597849, 0, -0.801609, 0, 1, 0, 0.801609, 0, -0.597849, -11.969, 1.661, 8.783 )
 script = ExtResource( 2 )
 speed = 0.0
 
