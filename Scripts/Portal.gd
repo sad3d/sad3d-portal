@@ -21,7 +21,6 @@ export var max_render_distance = 50.0
 
 func _ready():
 	portal_area.connect("body_entered", self, "_on_body_entered")
-	
 
 
 func _process(_delta):
@@ -55,9 +54,8 @@ func _on_body_entered(body):
 		
 		var player_displacement = portal_player_dummy.global_transform.origin - portal_plane.global_transform.origin
 		
-#		if player_displacement.dot(portal_plane.transform.basis.z) > 0 && player.final_velocity.dot(portal_plane.transform.basis.z) < 0:
-		if player.final_velocity.dot(portal_plane.transform.basis.z) < 0:
-		
+		if player_displacement.dot(portal_plane.transform.basis.z) > 0:
+			
 			player.global_transform.origin = portal_target.global_transform.origin + player_displacement
 			player.global_transform.basis = Basis(Vector3.UP, portal_camera.global_transform.basis.get_euler().y)
 		
