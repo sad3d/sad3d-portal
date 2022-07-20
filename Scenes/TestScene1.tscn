@@ -400,7 +400,6 @@ script = ExtResource( 4 )
 transform = Transform( -1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 11.5102, 1.661, -4.16902 )
 
 [node name="PortalArea" type="Area" parent="PortalViewport/PortalPlane"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="PortalViewport/PortalPlane/PortalArea"]
 transform = Transform( 1, 0, 2.84217e-14, 0, 1, 0, -2.84217e-14, 0, 1, 0, 0, -0.3158 )
