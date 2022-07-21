@@ -5,7 +5,6 @@
 [ext_resource path="res://Scripts/Generic/GenericDraggable.gd" type="Script" id=3]
 [ext_resource path="res://Scripts/Portal.gd" type="Script" id=4]
 [ext_resource path="res://Assets/Textures/Ground2 Albedo.jpg" type="Texture" id=5]
-[ext_resource path="res://Assets/Textures/Brick1 Albedo 256.jpg" type="Texture" id=6]
 [ext_resource path="res://Assets/Textures/Pavement1 Albedo 256.jpg" type="Texture" id=7]
 [ext_resource path="res://Assets/Textures/MarbleFloor1 Albedo.png" type="Texture" id=8]
 
@@ -45,7 +44,7 @@ albedo_texture = ExtResource( 7 )
 uv1_scale = Vector3( 1, 5.854, 1 )
 
 [sub_resource type="BoxShape" id=23]
-extents = Vector3( 1.555, 2.095, 0.02 )
+extents = Vector3( 1.555, 2.095, 0.1 )
 
 [sub_resource type="CubeMesh" id=37]
 size = Vector3( 3.134, 3.643, 0 )
@@ -66,7 +65,7 @@ uniform_name = "ColorModulation"
 
 [sub_resource type="VisualShader" id=13]
 code = "shader_type spatial;
-render_mode cull_front, specular_schlick_ggx, unshaded;
+render_mode cull_disabled, specular_schlick_ggx, unshaded;
 
 uniform sampler2D ViewportTexture;
 uniform vec4 ColorModulation : hint_color;
@@ -108,8 +107,7 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -2, 310 )
-modes/cull = 1
+modes/cull = 2
 flags/unshaded = true
 nodes/fragment/0/position = Vector2( 660, 160 )
 nodes/fragment/2/node = SubResource( 11 )
@@ -132,8 +130,11 @@ shader_param/ColorModulation = Color( 1, 1, 1, 1 )
 shader_param/ViewportTexture = SubResource( 27 )
 
 [sub_resource type="SpatialMaterial" id=24]
-albedo_texture = ExtResource( 6 )
+flags_unshaded = true
+albedo_color = Color( 0.2, 0.2, 0.2, 1 )
 uv1_scale = Vector3( 0.2, 2.103, 1 )
+
+[sub_resource type="QuadMesh" id=39]
 
 [sub_resource type="BoxShape" id=38]
 extents = Vector3( 1.54191, 1.89645, 0.0899168 )
@@ -181,7 +182,7 @@ material/0 = SubResource( 3 )
 shape = SubResource( 30 )
 
 [node name="Box2" type="MeshInstance" parent="Environment"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.011, 1.36356, -10.6147 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10.9748, 1.36356, -13.8778 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 7 )
@@ -192,7 +193,7 @@ material/0 = SubResource( 7 )
 shape = SubResource( 6 )
 
 [node name="Box5" type="MeshInstance" parent="Environment"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.55295, 1.36356, 12.7757 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.82622, 1.36356, 11.0082 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 34 )
@@ -203,7 +204,7 @@ material/0 = SubResource( 34 )
 shape = SubResource( 6 )
 
 [node name="Box3" type="MeshInstance" parent="Environment"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 12.4696, 1.36356, 9.86131 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.8028, 1.36356, 6.37608 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 8 )
@@ -236,7 +237,7 @@ material/0 = SubResource( 9 )
 shape = SubResource( 6 )
 
 [node name="Box8" type="MeshInstance" parent="Environment"]
-transform = Transform( 0.435826, 0, 0, 0, 4.937, 0, 0, 0, 0.435826, -6.39955, 4.05094, 4.71178 )
+transform = Transform( 0.435826, 0, 0, 0, 4.937, 0, 0, 0, 0.435826, -0.247678, 4.05094, 4.71178 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 9 )
@@ -291,7 +292,7 @@ material/0 = SubResource( 9 )
 shape = SubResource( 6 )
 
 [node name="Box16" type="MeshInstance" parent="Environment"]
-transform = Transform( 0.435826, 0, 0, 0, 4.937, 0, 0, 0, 0.435826, 13.9766, 4.05094, -2.59891 )
+transform = Transform( 0.435826, 0, 0, 0, 4.937, 0, 0, 0, 0.435826, 11.2256, 4.05094, -1.92563 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 9 )
@@ -393,16 +394,17 @@ shadow_bias = 0.05
 size = Vector2( 960, 540 )
 size_override_stretch = true
 keep_3d_linear = true
+render_target_update_mode = 3
 shadow_atlas_size = 32
 script = ExtResource( 4 )
 
 [node name="PortalPlane" type="Spatial" parent="PortalViewport"]
-transform = Transform( -1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 11.5102, 1.661, -4.16902 )
+transform = Transform( -1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 11, 1.7, -5 )
 
 [node name="PortalArea" type="Area" parent="PortalViewport/PortalPlane"]
 
 [node name="CollisionShape" type="CollisionShape" parent="PortalViewport/PortalPlane/PortalArea"]
-transform = Transform( 1, 0, 2.84217e-14, 0, 1, 0, -2.84217e-14, 0, 1, 0, 0, -0.3158 )
+transform = Transform( 1, 0, 2.84217e-14, 0, 1, 0, -2.84217e-14, 0, 1, 0, 0, 0 )
 shape = SubResource( 23 )
 
 [node name="PortalCameraDummy" type="Spatial" parent="PortalViewport/PortalPlane"]
@@ -412,44 +414,54 @@ shape = SubResource( 23 )
 [node name="PortalGraphics" type="Spatial" parent="PortalViewport/PortalPlane"]
 
 [node name="Plane" type="MeshInstance" parent="PortalViewport/PortalPlane/PortalGraphics"]
-transform = Transform( 1, -1.42109e-14, -4.26326e-14, 0, -1, 1.50996e-07, -4.26326e-14, -1.50996e-07, -1, 0, 0, -0.35 )
+transform = Transform( 1, -1.42109e-14, -4.26326e-14, 0, -1, 1.50996e-07, -4.26326e-14, -1.50996e-07, -1, 0, 0, -0.7 )
 layers = 512
 mesh = SubResource( 37 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 15 )
 
 [node name="Box5" type="MeshInstance" parent="PortalViewport/PortalPlane/PortalGraphics"]
-transform = Transform( 0.163312, -3.85241e-07, -6.90501e-08, -2.85544e-08, -2.20332, -2.31719e-08, -3.21214e-08, 1.9262e-07, -0.265056, 1.41003, 0.0734797, -0.209972 )
+transform = Transform( 0.163312, -3.32692e-07, -1.14455e-07, -2.46594e-08, -2.20332, -6.62663e-08, -2.46594e-08, 1.9262e-07, -0.758, 1.41003, 0.0734797, -0.209972 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="Box6" type="MeshInstance" parent="PortalViewport/PortalPlane/PortalGraphics"]
-transform = Transform( 0.163312, -3.85241e-07, -6.90501e-08, -2.85544e-08, -2.20332, -2.31719e-08, -2.46708e-08, 1.9262e-07, -0.265056, -1.58876, 0.0734801, -0.209972 )
+transform = Transform( 0.163312, -3.32692e-07, -1.14455e-07, -2.46594e-08, -2.20332, -6.62663e-08, -2.46594e-08, 1.9262e-07, -0.758, -1.58876, 0.0734801, -0.209972 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="Box7" type="MeshInstance" parent="PortalViewport/PortalPlane/PortalGraphics"]
-transform = Transform( 2.14158e-08, 2.20332, -3.17972e-08, 0.163312, -2.88931e-07, -2.31719e-08, -1.42772e-08, -1.60628e-07, -0.265056, -0.099046, -1.88574, -0.209969 )
+transform = Transform( 2.66069e-08, 2.20332, -1.14455e-07, 0.163312, -3.58966e-07, -6.62665e-08, -1.42772e-08, -3.32692e-07, -0.758, -0.099046, -1.88574, -0.209969 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="Box8" type="MeshInstance" parent="PortalViewport/PortalPlane/PortalGraphics"]
-transform = Transform( 2.14158e-08, 2.20332, -3.17972e-08, 0.163312, -2.88931e-07, -2.31719e-08, -1.42772e-08, 1.37395e-07, -0.265056, -0.099045, 1.95922, -0.209967 )
+transform = Transform( 2.66069e-08, 2.20332, 1.14455e-07, 0.163312, -3.58966e-07, -6.62665e-08, -1.42772e-08, 3.32692e-07, -0.758, -0.099045, 1.95922, -0.209967 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
+[node name="Box9" type="MeshInstance" parent="PortalViewport/PortalPlane/PortalGraphics"]
+transform = Transform( 5.75775e-07, 3.24435, 1.00776e-08, 3.53408, -5.28571e-07, -5.83469e-09, -3.08959e-07, 4.89883e-07, -0.0667409, -0.0990448, 0.124474, -0.785161 )
+layers = 512
+mesh = SubResource( 39 )
+skeleton = NodePath("../../../..")
+material/0 = SubResource( 24 )
+
 [node name="StaticBody" type="StaticBody" parent="PortalViewport/PortalPlane"]
+collision_layer = 4
+collision_mask = 4
 
 [node name="CollisionShape" type="CollisionShape" parent="PortalViewport/PortalPlane/StaticBody"]
 transform = Transform( 1, 0, 2.84217e-14, 0, 1, 0, -2.84217e-14, 0, 1, 0, 0, -0.393005 )
 shape = SubResource( 38 )
+disabled = true
 
 [node name="PortalTarget" type="Position3D" parent="PortalViewport"]
-transform = Transform( -1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, -3.57436, 1.661, 3.30879 )
+transform = Transform( -1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, -17.3243, 1.7, 2.51943 )
 script = ExtResource( 2 )
 speed = 0.0
 
@@ -460,17 +472,18 @@ cull_mask = 1048063
 size = Vector2( 960, 540 )
 size_override_stretch = true
 keep_3d_linear = true
+render_target_update_mode = 3
 shadow_atlas_size = 32
 script = ExtResource( 4 )
 
 [node name="PortalPlane" type="Spatial" parent="PortalViewport2"]
-transform = Transform( 1, 0, -2.68221e-07, 0, 1, 0, 2.68221e-07, 0, 1, -3.57434, 1.6615, 3.06911 )
+transform = Transform( 1, 0, -2.68221e-07, 0, 1, 0, 2.68221e-07, 0, 1, -17.3243, 1.7, 2.51943 )
 
 [node name="PortalArea" type="Area" parent="PortalViewport2/PortalPlane"]
 transform = Transform( 1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="PortalViewport2/PortalPlane/PortalArea"]
-transform = Transform( 1, 0, 8.52651e-14, 0, 1, 0, -8.52651e-14, 0, 1, -4.76837e-07, 0, -0.222817 )
+transform = Transform( 1, 0, 8.52651e-14, 0, 1, 0, -8.52651e-14, 0, 1, 0, 0, 0 )
 shape = SubResource( 23 )
 
 [node name="PortalCameraDummy" type="Spatial" parent="PortalViewport2/PortalPlane"]
@@ -480,44 +493,54 @@ shape = SubResource( 23 )
 [node name="PortalGraphics" type="Spatial" parent="PortalViewport2/PortalPlane"]
 
 [node name="Plane" type="MeshInstance" parent="PortalViewport2/PortalPlane/PortalGraphics"]
-transform = Transform( 1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 0, -0.236765 )
+transform = Transform( 1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 0, -0.7 )
 layers = 512
 mesh = SubResource( 37 )
 skeleton = NodePath("../..")
 material/0 = SubResource( 28 )
 
 [node name="Box5" type="MeshInstance" parent="PortalViewport2/PortalPlane/PortalGraphics"]
-transform = Transform( 0.163312, 0, 4.6566e-10, 0, 2.20332, 0, -1.07102e-08, 0, 0.265056, 1.41003, 0, -9.53674e-07 )
+transform = Transform( 0.163312, 0, 4.97106e-08, 0, 2.20332, 0, -1.07102e-08, 0, 0.758, 1.41003, 0, -9.53674e-07 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="Box6" type="MeshInstance" parent="PortalViewport2/PortalPlane/PortalGraphics"]
-transform = Transform( 0.163312, 0, 4.6566e-10, 0, 2.20332, 0, -1.81608e-08, 0, 0.265056, -1.58876, 0, 0 )
+transform = Transform( 0.163312, 0, 8.4292e-08, 0, 2.20332, 0, -1.81608e-08, 0, 0.758, -1.58876, 0, 0 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="Box7" type="MeshInstance" parent="PortalViewport2/PortalPlane/PortalGraphics"]
-transform = Transform( -7.13859e-09, 2.20332, 3.77186e-08, -0.163312, -9.63101e-08, 0, 1.31839e-15, -4.17233e-07, 0.265056, -0.0990455, 1.95922, -3.8147e-06 )
+transform = Transform( -7.13859e-09, 2.20332, 1.43539e-07, -0.163312, -9.63102e-08, -1.55086e-16, 1.31839e-15, -4.17233e-07, 0.758, -0.0990455, 1.95922, -3.8147e-06 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
 [node name="Box8" type="MeshInstance" parent="PortalViewport2/PortalPlane/PortalGraphics"]
-transform = Transform( -7.13859e-09, 2.20332, 3.77186e-08, -0.163312, -9.63101e-08, 0, 1.98452e-15, -7.15256e-07, 0.265056, -0.0990455, -1.88574, -5.72205e-06 )
+transform = Transform( -7.13859e-09, 2.20332, 2.46067e-07, -0.163312, -9.63102e-08, -1.54492e-15, 1.98452e-15, -7.15256e-07, 0.758, -0.0990455, -1.88574, -5.72205e-06 )
 mesh = SubResource( 4 )
 skeleton = NodePath("../../../..")
 material/0 = SubResource( 24 )
 
+[node name="Box10" type="MeshInstance" parent="PortalViewport2/PortalPlane/PortalGraphics"]
+transform = Transform( 5.75775e-07, 3.24435, 1.00776e-08, 3.53408, -5.28571e-07, -5.83469e-09, -3.08959e-07, 4.89883e-07, -0.0667409, -0.0990448, 0.124474, -0.785161 )
+layers = 512
+mesh = SubResource( 39 )
+skeleton = NodePath("../../../..")
+material/0 = SubResource( 24 )
+
 [node name="StaticBody" type="StaticBody" parent="PortalViewport2/PortalPlane"]
+collision_layer = 4
+collision_mask = 4
 
 [node name="CollisionShape" type="CollisionShape" parent="PortalViewport2/PortalPlane/StaticBody"]
 transform = Transform( 1, 0, 2.84217e-14, 0, 1, 0, -2.84217e-14, 0, 1, 0, 0, -0.393005 )
 shape = SubResource( 38 )
+disabled = true
 
 [node name="PortalTarget" type="Position3D" parent="PortalViewport2"]
-transform = Transform( 1, 0, 2.98023e-07, 0, 1, 0, -2.98023e-07, 0, 1, 11.5103, 1.661, -4.37021 )
+transform = Transform( 1, 0, 2.98023e-07, 0, 1, 0, -2.98023e-07, 0, 1, 11, 1.7, -5 )
 script = ExtResource( 2 )
 speed = 0.0
 
