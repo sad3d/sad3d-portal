@@ -16,6 +16,7 @@ onready var portal_target = $"PortalTarget"
 onready var portal_camera = $"PortalTarget/PortalCamera"
 
 var player_distance
+var player_offset
 export var max_render_distance = 50.0
 
 
@@ -24,7 +25,7 @@ func _ready():
 
 
 func _process(_delta):
-	# Orient camera and in space
+	# Orient camera in space
 	portal_camera_dummy.global_transform.origin = player_camera.global_transform.origin
 	portal_camera_dummy.global_transform.basis = player_camera.global_transform.basis
 	portal_camera.transform.origin = portal_camera_dummy.transform.origin
@@ -35,33 +36,36 @@ func _process(_delta):
 	
 	# Check distance to player, do not render if far
 	player_distance = portal_plane.global_transform.origin.distance_to(player.global_transform.origin)
+	player_offset = portal_player_dummy.global_transform.origin - portal_plane.global_transform.origin
 	
-	if player_distance >= max_render_distance:
-		render_target_update_mode = Viewport.UPDATE_DISABLED
-	else:
+	if player_offset.length() < 5:
 		render_target_update_mode = Viewport.UPDATE_ALWAYS
+	elif player_distance <= max_render_distance:
+		render_target_update_mode = Viewport.UPDATE_WHEN_VISIBLE
+	else:
+		render_target_update_mode = Viewport.UPDATE_DISABLED
 		
 	# Set clipping plane for PortalCamera
-#	portal_camera.near = player_distance
 	if player_distance < 2:
-		portal_camera.near = clamp(player_distance, 0.05, portal_camera.far)
+		portal_camera.near = 0.05
 	else:
 		portal_camera.near = clamp(player_distance - 2, 0.05, portal_camera.far)
-#	portal_camera.near = clamp(player_distance - 2, 0.05, portal_camera.far)
 
 
 func _on_body_exited(body):
 	if body.name == "Player":
 		
-		var player_displacement = portal_player_dummy.global_transform.origin - portal_plane.global_transform.origin
+		player_offset = portal_player_dummy.global_transform.origin - portal_plane.global_transform.origin
 		
-		if player_displacement.dot(portal_plane.transform.basis.z) < 0:
+		if player_offset.dot(portal_plane.transform.basis.z) < 0:
 			
-			player.global_transform.origin = portal_target.global_transform.origin + player_displacement
+			player.global_transform.origin = portal_target.global_transform.origin + player_offset
 			player.global_transform.basis = Basis(Vector3.UP, portal_camera.global_transform.basis.get_euler().y)
 			
 			
 	elif body is RigidBody:
 		
-		var body_displacement = portal_plane.global_transform.origin - body.global_transform.origin
-		body.global_transform.origin = portal_target.global_transform.origin - body_displacement
+		if body.linear_velocity.dot(portal_plane.transform.basis.z) < 0:
+		
+			var body_displacement = portal_plane.global_transform.origin - body.global_transform.origin
+			body.global_transform.origin = portal_target.global_transform.origin - body_displacement

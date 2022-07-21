@@ -107,6 +107,7 @@ void light() {
 
 }
 "
+graph_offset = Vector2( -250.362, 76 )
 modes/cull = 2
 flags/unshaded = true
 nodes/fragment/0/position = Vector2( 660, 160 )
@@ -394,7 +395,6 @@ shadow_bias = 0.05
 size = Vector2( 960, 540 )
 size_override_stretch = true
 keep_3d_linear = true
-render_target_update_mode = 3
 shadow_atlas_size = 32
 script = ExtResource( 4 )
 
@@ -472,12 +472,11 @@ cull_mask = 1048063
 size = Vector2( 960, 540 )
 size_override_stretch = true
 keep_3d_linear = true
-render_target_update_mode = 3
 shadow_atlas_size = 32
 script = ExtResource( 4 )
 
 [node name="PortalPlane" type="Spatial" parent="PortalViewport2"]
-transform = Transform( 1, 0, -2.68221e-07, 0, 1, 0, 2.68221e-07, 0, 1, -17.3243, 1.7, 2.51943 )
+transform = Transform( 1, 0, -6.3573e-08, 0, 1, 0, 6.3573e-08, 0, 1, -17.3243, 1.7, 2.51943 )
 
 [node name="PortalArea" type="Area" parent="PortalViewport2/PortalPlane"]
 transform = Transform( 1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 0, 0 )
